@@ -15,7 +15,11 @@ export default function Hero() {
   const subRef      = useRef<HTMLParagraphElement>(null);
   const ctaRef      = useRef<HTMLDivElement>(null);
   const statsRef    = useRef<HTMLDivElement>(null);
-  const menuRef     = useRef<HTMLDivElement>(null);
+  const menuRef        = useRef<HTMLDivElement>(null);
+  const menuCloseRef   = useRef<HTMLButtonElement>(null);
+  const menuBrandRef   = useRef<HTMLSpanElement>(null);
+  const menuNavRef     = useRef<HTMLElement>(null);
+  const menuBottomRef  = useRef<HTMLDivElement>(null);
   const [open, setOpen] = useState(false);
 
   // ── Intro animation ───────────────────────────────────────────────────────
@@ -55,27 +59,43 @@ export default function Hero() {
   // ── Mobile menu open/close ────────────────────────────────────────────────
   useEffect(() => {
     if (!menuRef.current) return;
+    const inner = [menuCloseRef.current, menuBrandRef.current, menuNavRef.current, menuBottomRef.current];
+
     if (open) {
+      document.body.style.overflow = 'hidden';
       if (!prefersReducedMotion()) {
-        gsap.fromTo(menuRef.current,
-          { x: '100%', opacity: 0 },
-          { x: '0%', opacity: 1, duration: 0.38, ease: 'power3.out' }
+        const tl = gsap.timeline();
+        // Panel slides in
+        tl.fromTo(menuRef.current,
+          { x: '100%' },
+          { x: '0%', duration: 0.45, ease: 'power4.out' }
+        )
+        // Inner elements fade + slide in with stagger
+        .fromTo(inner,
+          { x: 24, opacity: 0 },
+          { x: 0, opacity: 1, duration: 0.35, ease: 'power3.out', stagger: 0.06 },
+          '-=0.25'
         );
       } else {
-        gsap.set(menuRef.current, { x: '0%', opacity: 1 });
+        gsap.set(menuRef.current, { x: '0%' });
+        gsap.set(inner, { x: 0, opacity: 1 });
       }
-      document.body.style.overflow = 'hidden';
-      // H4: move keyboard focus into the menu after it opens
-      setTimeout(() => {
-        menuRef.current?.querySelector<HTMLElement>('button, a')?.focus();
-      }, 50);
+      setTimeout(() => menuRef.current?.querySelector<HTMLElement>('button, a')?.focus(), 50);
     } else {
       if (!prefersReducedMotion()) {
-        gsap.to(menuRef.current,
-          { x: '100%', opacity: 0, duration: 0.28, ease: 'power3.in' }
+        const tl = gsap.timeline();
+        // Inner elements fade out quickly
+        tl.to(inner,
+          { x: 16, opacity: 0, duration: 0.18, ease: 'power2.in', stagger: 0.03 }
+        )
+        // Panel slides out
+        .to(menuRef.current,
+          { x: '100%', duration: 0.35, ease: 'power4.in' },
+          '-=0.08'
         );
       } else {
-        gsap.set(menuRef.current, { x: '100%', opacity: 0 });
+        gsap.set(inner, { x: 24, opacity: 0 });
+        gsap.set(menuRef.current, { x: '100%' });
       }
       document.body.style.overflow = '';
     }
@@ -161,6 +181,7 @@ export default function Hero() {
         }}
       >
         <button
+          ref={menuCloseRef}
           onClick={() => setOpen(false)}
           aria-label="Close menu"
           style={{
@@ -173,12 +194,12 @@ export default function Hero() {
             <line x1="20" y1="2" x2="2" y2="20" stroke="white" strokeWidth="2" strokeLinecap="round"/>
           </svg>
         </button>
-        <span style={{
+        <span ref={menuBrandRef} style={{
           fontWeight: 800, fontSize: '0.85rem', letterSpacing: '0.12em',
           textTransform: 'uppercase', color: 'rgba(255,255,255,0.5)',
           marginBottom: '3rem',
         }}>YOUR LOGO HERE</span>
-        <nav aria-label="Mobile navigation" style={{ display: 'flex', flexDirection: 'column', gap: '0' }}>
+        <nav ref={menuNavRef} aria-label="Mobile navigation" style={{ display: 'flex', flexDirection: 'column', gap: '0' }}>
           {NAV_ITEMS.map((item) => (
             <a
               key={item}
@@ -197,10 +218,8 @@ export default function Hero() {
             >{item}</a>
           ))}
         </nav>
-        <div style={{ marginTop: '1.5rem' }}>
+        <div ref={menuBottomRef} style={{ marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
           <InstallPWAButton onInstalled={() => setOpen(false)} />
-        </div>
-        <div style={{ marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
           <a
             href="/sale"
             onClick={() => setOpen(false)}
