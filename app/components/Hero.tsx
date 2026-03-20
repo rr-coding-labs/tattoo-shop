@@ -20,6 +20,7 @@ export default function Hero() {
   const menuBrandRef   = useRef<HTMLSpanElement>(null);
   const menuNavRef     = useRef<HTMLElement>(null);
   const menuBottomRef  = useRef<HTMLDivElement>(null);
+  const menuMounted    = useRef(false);
   const [open, setOpen] = useState(false);
 
   // ── Intro animation ───────────────────────────────────────────────────────
@@ -59,7 +60,10 @@ export default function Hero() {
   // ── Mobile menu open/close ────────────────────────────────────────────────
   useEffect(() => {
     if (!menuRef.current) return;
+    // Skip on initial mount — menu starts offscreen, no animation needed
+    if (!menuMounted.current) { menuMounted.current = true; return; }
     const inner = [menuCloseRef.current, menuBrandRef.current, menuNavRef.current, menuBottomRef.current];
+    gsap.killTweensOf([menuRef.current, ...inner]);
 
     if (open) {
       document.body.style.overflow = 'hidden';
