@@ -22,15 +22,26 @@ export default function Booking() {
 
   useEffect(() => {
     // Pre-populate from ?artist= param (navigating from an artist page)
+    // From BookWithArtistButton (client-side nav, no URL param)
+    const storedArtist = sessionStorage.getItem('bookArtist');
+    if (storedArtist) {
+      sessionStorage.removeItem('bookArtist');
+      setPreferredArtist(storedArtist);
+      // Intro was skipped so just wait for masonry to settle
+      setTimeout(() => {
+        document.getElementById('book')?.scrollIntoView({ behavior: 'smooth' });
+      }, 800);
+      return;
+    }
+
+    // Legacy: from URL param (direct link / old flow)
     const params = new URLSearchParams(window.location.search);
     const urlArtist = params.get('artist');
     if (urlArtist) {
       setPreferredArtist(urlArtist);
-      // Remove the param from the URL without a page reload
       const clean = new URL(window.location.href);
       clean.searchParams.delete('artist');
       window.history.replaceState({}, '', clean.toString());
-      // Scroll after masonry grid + intro animation have fully settled
       setTimeout(() => {
         document.getElementById('book')?.scrollIntoView({ behavior: 'instant' });
       }, 2000);

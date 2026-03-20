@@ -2,6 +2,7 @@ import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { ARTISTS, getArtistBySlug } from '../../lib/artists';
 import ArtistWorks from '../../components/ArtistWorks';
+import BookWithArtistButton from '../../components/BookWithArtistButton';
 
 export function generateStaticParams() {
   return ARTISTS.map(a => ({ slug: a.slug }));
@@ -100,12 +101,7 @@ export default async function ArtistPage({ params }: { params: Promise<{ slug: s
             ))}
           </div>
 
-          <a
-            href={`/?artist=${encodeURIComponent(artist.name)}#book`}
-            className="btn-primary"
-          >
-            Book with {artist.name.split(' ')[0]}
-          </a>
+          <BookWithArtistButton artistName={artist.name} firstName={artist.name.split(' ')[0]} />
         </div>
       </section>
 
@@ -160,7 +156,7 @@ export default async function ArtistPage({ params }: { params: Promise<{ slug: s
           <p style={{ color: 'rgba(255,255,255,0.55)', marginBottom: '2.5rem', maxWidth: '400px', margin: '0 auto 2.5rem' }}>
             Every consultation is complimentary. We respond within 24 hours.
           </p>
-          <a href="/#book" className="btn-primary">Request Consultation</a>
+          <BookWithArtistButton artistName={artist.name} firstName="Request Consultation" />
         </div>
       </section>
 

@@ -39,6 +39,14 @@ export default function Hero() {
     }
 
     const textEls = [navRef.current, eyebrowRef.current, headRef.current, subRef.current, ctaRef.current, statsRef.current];
+
+    // Skip intro animation when navigating from artist page via BookWithArtistButton
+    if (sessionStorage.getItem('skipIntro')) {
+      sessionStorage.removeItem('skipIntro');
+      gsap.set(imgOverlay.current, { display: 'none' });
+      gsap.from(textEls, { opacity: 0, duration: 0.5, stagger: 0.08, ease: 'power2.out' });
+      return;
+    }
     let tl: gsap.core.Timeline;
 
     // JS fallback: if GSAP never fires, remove overlay after 3s
