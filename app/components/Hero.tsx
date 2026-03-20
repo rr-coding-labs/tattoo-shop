@@ -25,39 +25,53 @@ export default function Hero() {
 
   // ── Intro animation ───────────────────────────────────────────────────────
   useEffect(() => {
+    // Fix Safari scroll restoration — always start at top, never mid-page
+    if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+    window.scrollTo(0, 0);
+
     if (prefersReducedMotion()) {
       gsap.set(imgOverlay.current, { display: 'none' });
       return;
     }
 
     const isMobile = window.innerWidth < 768;
+    let ctx: gsap.Context;
+    let raf1: number, raf2: number;
 
-    const ctx = gsap.context(() => {
-      const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+    // Double rAF: ensures Safari has fully painted before GSAP measures/animates
+    raf1 = requestAnimationFrame(() => {
+      raf2 = requestAnimationFrame(() => {
+        // Recalculate ScrollTrigger positions now that we're at scroll 0
+        ScrollTrigger.refresh();
 
-      // 1. Image wipe: dark overlay slides off to the right, revealing the photo
-      tl.to(imgOverlay.current, {
-        x: '100%',
-        duration: isMobile ? 1.0 : 1.3,
-        ease: 'power3.inOut',
-        onComplete: () => { gsap.set(imgOverlay.current, { display: 'none' }); },
-      }, 0)
+        ctx = gsap.context(() => {
+          const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
 
-      // 2. Nav drops in from top
-      .from(navRef.current, {
-        y: -20, opacity: 0, duration: 0.6,
-      }, isMobile ? 0.35 : 0.5)
+          tl.to(imgOverlay.current, {
+            x: '100%',
+            duration: isMobile ? 1.0 : 1.3,
+            ease: 'power3.inOut',
+            onComplete: () => { gsap.set(imgOverlay.current, { display: 'none' }); },
+          }, 0)
 
-      // 3. On mobile: slide up (y) to avoid overflow:hidden clipping horizontal slides
-      //    On desktop: slide in from left (x)
-      .from(eyebrowRef.current, isMobile ? { y: 30, opacity: 0, duration: 0.6 }  : { x: -50, opacity: 0, duration: 0.7 },  isMobile ? 0.5  : 0.65)
-      .from(headRef.current,    isMobile ? { y: 40, opacity: 0, duration: 0.75 } : { x: -70, opacity: 0, duration: 0.85 }, isMobile ? 0.6  : 0.75)
-      .from(subRef.current,     isMobile ? { y: 30, opacity: 0, duration: 0.65 } : { x: -50, opacity: 0, duration: 0.75 }, isMobile ? 0.72 : 0.9)
-      .from(ctaRef.current,     isMobile ? { y: 24, opacity: 0, duration: 0.6 }  : { x: -40, opacity: 0, duration: 0.7 },  isMobile ? 0.84 : 1.0)
-      .from(statsRef.current,   isMobile ? { y: 20, opacity: 0, duration: 0.55 } : { x: -30, opacity: 0, duration: 0.65 }, isMobile ? 0.94 : 1.1);
+          .from(navRef.current, {
+            y: -20, opacity: 0, duration: 0.6,
+          }, isMobile ? 0.35 : 0.5)
+
+          .from(eyebrowRef.current, isMobile ? { y: 30, opacity: 0, duration: 0.6 }  : { x: -50, opacity: 0, duration: 0.7 },  isMobile ? 0.5  : 0.65)
+          .from(headRef.current,    isMobile ? { y: 40, opacity: 0, duration: 0.75 } : { x: -70, opacity: 0, duration: 0.85 }, isMobile ? 0.6  : 0.75)
+          .from(subRef.current,     isMobile ? { y: 30, opacity: 0, duration: 0.65 } : { x: -50, opacity: 0, duration: 0.75 }, isMobile ? 0.72 : 0.9)
+          .from(ctaRef.current,     isMobile ? { y: 24, opacity: 0, duration: 0.6 }  : { x: -40, opacity: 0, duration: 0.7 },  isMobile ? 0.84 : 1.0)
+          .from(statsRef.current,   isMobile ? { y: 20, opacity: 0, duration: 0.55 } : { x: -30, opacity: 0, duration: 0.65 }, isMobile ? 0.94 : 1.1);
+        });
+      });
     });
 
-    return () => { ctx.revert(); };
+    return () => {
+      cancelAnimationFrame(raf1);
+      cancelAnimationFrame(raf2);
+      ctx?.revert();
+    };
   }, []);
 
   // ── Mobile menu open/close ────────────────────────────────────────────────
@@ -148,6 +162,7 @@ export default function Hero() {
           zIndex: 20,
           transformOrigin: 'left center',
           willChange: 'transform',
+          animation: 'overlayFallback 0.6s ease-out 3s forwards',
         }}
       />
 
@@ -429,6 +444,10 @@ export default function Hero() {
       </div>
 
       <style>{`
+        /* CSS fallback: if GSAP never fires, overlay wipes itself out after 3s */
+        @keyframes overlayFallback {
+          to { transform: translateX(100%); opacity: 0; display: none; }
+        }
         @media (max-width: 768px) {
           .hamburger        { display: flex !important; }
           .nav-cta-desktop  { display: none !important; }
