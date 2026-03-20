@@ -36,42 +36,31 @@ export default function Hero() {
       return;
     }
 
-    const isMobile = window.innerWidth < 768;
     let ctx: gsap.Context;
-    let raf1: number, raf2: number;
 
-    // Double rAF: ensures Safari has fully painted before GSAP measures/animates
-    raf1 = requestAnimationFrame(() => {
-      raf2 = requestAnimationFrame(() => {
-        // Recalculate ScrollTrigger positions now that we're at scroll 0
-        ScrollTrigger.refresh();
+    // setTimeout is more reliable than rAF on Safari — ensures paint + layout complete
+    const timer = setTimeout(() => {
+      ScrollTrigger.refresh();
 
-        ctx = gsap.context(() => {
-          const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+      ctx = gsap.context(() => {
+        const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
 
-          tl.to(imgOverlay.current, {
-            x: '100%',
-            duration: isMobile ? 1.0 : 1.3,
-            ease: 'power3.inOut',
-            onComplete: () => { gsap.set(imgOverlay.current, { display: 'none' }); },
-          }, 0)
+        tl.to(imgOverlay.current, {
+          x: '100%', duration: 1.3, ease: 'power3.inOut',
+          onComplete: () => { gsap.set(imgOverlay.current, { display: 'none' }); },
+        }, 0)
 
-          .from(navRef.current, {
-            y: -20, opacity: 0, duration: 0.6,
-          }, isMobile ? 0.35 : 0.5)
-
-          .from(eyebrowRef.current, isMobile ? { y: 30, opacity: 0, duration: 0.6 }  : { x: -50, opacity: 0, duration: 0.7 },  isMobile ? 0.5  : 0.65)
-          .from(headRef.current,    isMobile ? { y: 40, opacity: 0, duration: 0.75 } : { x: -70, opacity: 0, duration: 0.85 }, isMobile ? 0.6  : 0.75)
-          .from(subRef.current,     isMobile ? { y: 30, opacity: 0, duration: 0.65 } : { x: -50, opacity: 0, duration: 0.75 }, isMobile ? 0.72 : 0.9)
-          .from(ctaRef.current,     isMobile ? { y: 24, opacity: 0, duration: 0.6 }  : { x: -40, opacity: 0, duration: 0.7 },  isMobile ? 0.84 : 1.0)
-          .from(statsRef.current,   isMobile ? { y: 20, opacity: 0, duration: 0.55 } : { x: -30, opacity: 0, duration: 0.65 }, isMobile ? 0.94 : 1.1);
-        });
+        .from(navRef.current,    { y: -20, opacity: 0, duration: 0.6 }, 0.5)
+        .from(eyebrowRef.current,{ x: -50, opacity: 0, duration: 0.7  }, 0.65)
+        .from(headRef.current,   { x: -70, opacity: 0, duration: 0.85 }, 0.75)
+        .from(subRef.current,    { x: -50, opacity: 0, duration: 0.75 }, 0.9)
+        .from(ctaRef.current,    { x: -40, opacity: 0, duration: 0.7  }, 1.0)
+        .from(statsRef.current,  { x: -30, opacity: 0, duration: 0.65 }, 1.1);
       });
-    });
+    }, 150);
 
     return () => {
-      cancelAnimationFrame(raf1);
-      cancelAnimationFrame(raf2);
+      clearTimeout(timer);
       ctx?.revert();
     };
   }, []);
@@ -135,7 +124,6 @@ export default function Hero() {
         position: 'relative',
         display: 'flex',
         flexDirection: 'column',
-        overflow: 'hidden',
       }}
     >
       {/* ── Background image ─────────────────────────────────────── */}
