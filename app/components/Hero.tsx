@@ -20,7 +20,10 @@ export default function Hero() {
 
   // ── Intro animation ───────────────────────────────────────────────────────
   useEffect(() => {
-    if (prefersReducedMotion()) return;
+    if (prefersReducedMotion()) {
+      gsap.set(imgOverlay.current, { display: 'none' });
+      return;
+    }
 
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
@@ -30,6 +33,7 @@ export default function Hero() {
         x: '100%',
         duration: 1.3,
         ease: 'power3.inOut',
+        onComplete: () => gsap.set(imgOverlay.current, { display: 'none' }),
       }, 0)
 
       // 2. Nav drops in from top
@@ -116,6 +120,7 @@ export default function Hero() {
           background: '#0E0C0A',
           zIndex: 20,
           transformOrigin: 'left center',
+          willChange: 'transform',
         }}
       />
 
