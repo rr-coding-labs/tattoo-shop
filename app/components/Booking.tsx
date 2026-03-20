@@ -30,6 +30,10 @@ export default function Booking() {
       const clean = new URL(window.location.href);
       clean.searchParams.delete('artist');
       window.history.replaceState({}, '', clean.toString());
+      // Scroll to this section after layout and animations have settled
+      setTimeout(() => {
+        document.getElementById('book')?.scrollIntoView({ behavior: 'smooth' });
+      }, 700);
     }
 
     // Pre-populate from custom event (clicking "Book with X" on the same page)

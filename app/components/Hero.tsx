@@ -28,18 +28,8 @@ export default function Hero() {
     // Fix Safari scroll restoration — prevent mid-page jump on reload
     if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
 
-    const hash = window.location.hash;
-    if (!hash) {
-      // No hash: always start at top
-      window.scrollTo(0, 0);
-    } else {
-      // Has hash (e.g. #book from artist page CTA): let layout settle then scroll there
-      window.scrollTo(0, 0);
-      setTimeout(() => {
-        const target = document.querySelector(hash);
-        if (target) target.scrollIntoView({ behavior: 'instant' });
-      }, 300);
-    }
+    // Always start at top — Booking.tsx handles scrolling when ?artist param is present
+    window.scrollTo(0, 0);
 
     if (prefersReducedMotion()) {
       gsap.set(imgOverlay.current, { display: 'none' });

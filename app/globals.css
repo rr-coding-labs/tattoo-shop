@@ -235,7 +235,7 @@ textarea:focus-visible {
   .nav-bar {
     position: fixed !important;
     top: 0; left: 0; right: 0;
-    background: rgba(10,8,5,0.88) !important;
+    background: rgba(10,8,5,0.55) !important;
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
     z-index: 20 !important;
