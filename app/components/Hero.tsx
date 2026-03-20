@@ -25,9 +25,21 @@ export default function Hero() {
 
   // ── Intro animation ───────────────────────────────────────────────────────
   useEffect(() => {
-    // Fix Safari scroll restoration — always start at top, never mid-page
+    // Fix Safari scroll restoration — prevent mid-page jump on reload
     if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
-    window.scrollTo(0, 0);
+
+    const hash = window.location.hash;
+    if (!hash) {
+      // No hash: always start at top
+      window.scrollTo(0, 0);
+    } else {
+      // Has hash (e.g. #book from artist page CTA): let layout settle then scroll there
+      window.scrollTo(0, 0);
+      setTimeout(() => {
+        const target = document.querySelector(hash);
+        if (target) target.scrollIntoView({ behavior: 'instant' });
+      }, 300);
+    }
 
     if (prefersReducedMotion()) {
       gsap.set(imgOverlay.current, { display: 'none' });
