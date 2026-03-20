@@ -25,43 +25,47 @@ export default function Hero() {
 
   // ── Intro animation ───────────────────────────────────────────────────────
   useEffect(() => {
-    // Fix Safari scroll restoration — prevent mid-page jump on reload
     if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
-
-    // Always start at top — Booking.tsx handles scrolling when ?artist param is present
     window.scrollTo(0, 0);
 
+    const textEls = [navRef.current, eyebrowRef.current, headRef.current, subRef.current, ctaRef.current, statsRef.current];
+    let tl: gsap.core.Timeline;
+
+    // JS fallback: if GSAP never fires, remove overlay after 3s
+    const fallback = setTimeout(() => {
+      if (imgOverlay.current) imgOverlay.current.style.display = 'none';
+    }, 3000);
+
     if (prefersReducedMotion()) {
+      // Reduced motion: fade in only, no slides
       gsap.set(imgOverlay.current, { display: 'none' });
+      clearTimeout(fallback);
+      gsap.from(textEls, { opacity: 0, duration: 0.6, stagger: 0.1, ease: 'power2.out', delay: 0.1 });
       return;
     }
 
-    let ctx: gsap.Context;
-
-    // setTimeout is more reliable than rAF on Safari — ensures paint + layout complete
     const timer = setTimeout(() => {
+      clearTimeout(fallback);
       ScrollTrigger.refresh();
 
-      ctx = gsap.context(() => {
-        const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
-
-        tl.to(imgOverlay.current, {
-          x: '100%', duration: 1.3, ease: 'power3.inOut',
+      tl = gsap.timeline({ defaults: { ease: 'power3.out', force3D: true } });
+      tl
+        .to(imgOverlay.current, {
+          x: '100%', duration: 1.3, ease: 'power3.inOut', force3D: true,
           onComplete: () => { gsap.set(imgOverlay.current, { display: 'none' }); },
         }, 0)
-
-        .from(navRef.current,    { y: -20, opacity: 0, duration: 0.6 }, 0.5)
-        .from(eyebrowRef.current,{ x: -50, opacity: 0, duration: 0.7  }, 0.65)
-        .from(headRef.current,   { x: -70, opacity: 0, duration: 0.85 }, 0.75)
-        .from(subRef.current,    { x: -50, opacity: 0, duration: 0.75 }, 0.9)
-        .from(ctaRef.current,    { x: -40, opacity: 0, duration: 0.7  }, 1.0)
-        .from(statsRef.current,  { x: -30, opacity: 0, duration: 0.65 }, 1.1);
-      });
+        .from(navRef.current,     { y: -20, opacity: 0, duration: 0.6  }, 0.5)
+        .from(eyebrowRef.current, { x: -50, opacity: 0, duration: 0.7  }, 0.65)
+        .from(headRef.current,    { x: -70, opacity: 0, duration: 0.85 }, 0.75)
+        .from(subRef.current,     { x: -50, opacity: 0, duration: 0.75 }, 0.9)
+        .from(ctaRef.current,     { x: -40, opacity: 0, duration: 0.7  }, 1.0)
+        .from(statsRef.current,   { x: -30, opacity: 0, duration: 0.65 }, 1.1);
     }, 150);
 
     return () => {
       clearTimeout(timer);
-      ctx?.revert();
+      clearTimeout(fallback);
+      tl?.kill();
     };
   }, []);
 
@@ -152,7 +156,6 @@ export default function Hero() {
           zIndex: 20,
           transformOrigin: 'left center',
           willChange: 'transform',
-          animation: 'overlayFallback 0.6s ease-out 3s forwards',
         }}
       />
 
