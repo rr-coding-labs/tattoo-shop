@@ -33,7 +33,7 @@ export default function Hero() {
         x: '100%',
         duration: 1.3,
         ease: 'power3.inOut',
-        onComplete: () => gsap.set(imgOverlay.current, { display: 'none' }),
+        onComplete: () => { gsap.set(imgOverlay.current, { display: 'none' }); },
       }, 0)
 
       // 2. Nav drops in from top
