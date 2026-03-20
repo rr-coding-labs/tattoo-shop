@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { ARTISTS, getArtistBySlug } from '../../lib/artists';
+import ArtistWorks from '../../components/ArtistWorks';
 
 export function generateStaticParams() {
   return ARTISTS.map(a => ({ slug: a.slug }));
@@ -123,31 +124,11 @@ export default async function ArtistPage({ params }: { params: Promise<{ slug: s
           color: '#fff', marginBottom: '3rem',
         }}>Portfolio</h2>
 
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(2, 1fr)',
-          gap: '1rem',
-        }} className="artist-works">
-          {artist.works.map((src, i) => (
-            // H2: next/image with fill; L3: use workAlt if provided
-            <div key={i} style={{
-              borderRadius: '12px',
-              overflow: 'hidden',
-              aspectRatio: i % 3 === 0 ? '4/5' : '1/1',
-              background: 'var(--bg-dark-2)',
-              position: 'relative',
-            }}>
-              <Image
-                src={src}
-                alt={artist.workAlt?.[i] ?? `${artist.name} work ${i + 1}`}
-                fill
-                sizes="(max-width: 768px) 50vw, 600px"
-                style={{ objectFit: 'cover' }}
-                className="portfolio-work-img"
-              />
-            </div>
-          ))}
-        </div>
+        <ArtistWorks
+          works={artist.works}
+          artistName={artist.name}
+          workAlt={artist.workAlt}
+        />
       </section>
 
       {/* Book CTA */}
