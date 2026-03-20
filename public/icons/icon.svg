@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="96" fill="#0A0806"/>
+  <!-- Copper border ring -->
+  <rect x="18" y="18" width="476" height="476" rx="82" fill="none" stroke="#C07A2E" stroke-width="4" opacity="0.4"/>
+  <!-- Stylised "Y" mark in copper gradient -->
+  <defs>
+    <linearGradient id="copper" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%"   stop-color="#7A4A18"/>
+      <stop offset="35%"  stop-color="#C07A2E"/>
+      <stop offset="60%"  stop-color="#E09A50"/>
+      <stop offset="80%"  stop-color="#F0C882"/>
+      <stop offset="100%" stop-color="#C07A2E"/>
+    </linearGradient>
+  </defs>
+  <!-- Left arm of Y -->
+  <line x1="152" y1="140" x2="256" y2="268" stroke="url(#copper)" stroke-width="36" stroke-linecap="round"/>
+  <!-- Right arm of Y -->
+  <line x1="360" y1="140" x2="256" y2="268" stroke="url(#copper)" stroke-width="36" stroke-linecap="round"/>
+  <!-- Stem of Y -->
+  <line x1="256" y1="268" x2="256" y2="372" stroke="url(#copper)" stroke-width="36" stroke-linecap="round"/>
+</svg>
