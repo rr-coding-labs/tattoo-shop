@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from 'react';
 import Link from 'next/link';
+import BackToTop from '../components/BackToTop';
 
 /* ─── Fade-in on scroll ───────────────────────────────────────────── */
 function useFadeIn() {
@@ -590,6 +591,8 @@ export default function SalePage() {
           View the live app →
         </a>
       </footer>
+
+      <BackToTop />
 
       {/* ── PAGE STYLES ─────────────────────────────────────────── */}
       <style>{`
