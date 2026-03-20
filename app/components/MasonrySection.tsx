@@ -30,7 +30,7 @@ export default function MasonrySection() {
   const headingRef  = useRef<HTMLDivElement>(null);
   const ctaRef      = useRef<HTMLAnchorElement>(null);
   const gridRef     = useRef<HTMLDivElement>(null);
-  const [gridVisible, setGridVisible] = useState(false);
+  const [gridVisible] = useState(true);
   // M5: start at 0 to avoid a hardcoded CLS-causing initial height
   const [gridHeight, setGridHeight] = useState(0);
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
@@ -39,12 +39,7 @@ export default function MasonrySection() {
   }, []);
 
   useEffect(() => {
-    // H1: skip all motion if user prefers reduced motion
-    if (prefersReducedMotion()) {
-      // Still mount the grid immediately for reduced-motion users
-      setGridVisible(true);
-      return;
-    }
+    if (prefersReducedMotion()) return;
 
     const ctx = gsap.context(() => {
 
@@ -71,14 +66,6 @@ export default function MasonrySection() {
           trigger: ctaRef.current,
           start: 'top 90%',
         },
-      });
-
-      // Mount the Masonry grid only when it enters the viewport
-      ScrollTrigger.create({
-        trigger: gridRef.current,
-        start: 'top 85%',
-        onEnter: () => setGridVisible(true),
-        once: true,
       });
 
     }, sectionRef);
