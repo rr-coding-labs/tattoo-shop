@@ -28,6 +28,16 @@ export default function Hero() {
     if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
     window.scrollTo(0, 0);
 
+    // If page was loaded with a hash (e.g. /#artists from artist back-link),
+    // scroll there after layout has settled. #book is handled by Booking.tsx.
+    const hash = window.location.hash;
+    if (hash && hash !== '#book') {
+      const hashTimer = setTimeout(() => {
+        document.querySelector(hash)?.scrollIntoView({ behavior: 'instant' });
+      }, 2000);
+      return () => clearTimeout(hashTimer);
+    }
+
     const textEls = [navRef.current, eyebrowRef.current, headRef.current, subRef.current, ctaRef.current, statsRef.current];
     let tl: gsap.core.Timeline;
 
