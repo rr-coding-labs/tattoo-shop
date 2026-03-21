@@ -142,7 +142,11 @@ export default function Artists() {
                   href="#book"
                   className="btn-ghost"
                   style={{ display: 'block', textAlign: 'center', fontSize: '0.7rem', padding: '0.6rem 1.4rem' }}
-                  onClick={() => window.dispatchEvent(new CustomEvent('select-artist', { detail: name }))}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    window.dispatchEvent(new CustomEvent('select-artist', { detail: name }));
+                    document.getElementById('book')?.scrollIntoView({ behavior: 'smooth' });
+                  }}
                 >
                   Book with {name.split(' ')[0]}
                 </a>

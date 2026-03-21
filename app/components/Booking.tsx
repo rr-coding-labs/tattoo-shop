@@ -31,7 +31,6 @@ export default function Booking() {
       setTimeout(() => {
         document.getElementById('book')?.scrollIntoView({ behavior: 'smooth' });
       }, 800);
-      return;
     }
 
     // Legacy: from URL param (direct link / old flow)
