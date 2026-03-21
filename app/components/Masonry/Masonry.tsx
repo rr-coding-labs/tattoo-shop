@@ -139,7 +139,7 @@ const Masonry: React.FC<MasonryProps> = ({
   const hasMounted = useRef(false);
 
   useLayoutEffect(() => {
-    if (!imagesReady) return;
+    if (!imagesReady || grid.length === 0) return;
     grid.forEach((item, index) => {
       const selector = `[data-key="${item.id}"]`;
       const animationProps = { x: item.x, y: item.y, width: item.w, height: item.h };
