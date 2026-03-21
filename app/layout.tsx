@@ -65,6 +65,16 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="en">
       <body>
+        {/* Scroll-to-top on reload — runs synchronously before browser restores scroll position.
+            Skipped on /sale so the user can reload mid-page there. */}
+        <script dangerouslySetInnerHTML={{ __html: `
+          (function() {
+            if (window.location.pathname !== '/sale') {
+              if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+              window.scrollTo(0, 0);
+            }
+          })();
+        `}} />
         {children}
         <script
           type="application/ld+json"

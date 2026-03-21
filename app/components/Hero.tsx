@@ -25,9 +25,6 @@ export default function Hero() {
 
   // ── Intro animation ───────────────────────────────────────────────────────
   useEffect(() => {
-    if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
-    window.scrollTo(0, 0);
-
     // Grab hash then immediately strip it — page always looks fresh on reload
     const hash = window.location.hash;
     if (hash) history.replaceState(null, '', window.location.pathname + window.location.search);
