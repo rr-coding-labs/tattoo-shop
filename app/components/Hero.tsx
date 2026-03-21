@@ -202,7 +202,7 @@ export default function Hero() {
         aria-label="Navigation menu"
         style={{
           position: 'fixed', top: 0, right: 0,
-          width: 'min(80vw, 320px)', height: '100svh',
+          width: 'min(80vw, 320px)', height: '100dvh',
           background: 'rgba(10,8,6,0.97)',
           backdropFilter: 'blur(24px)',
           WebkitBackdropFilter: 'blur(24px)',

@@ -22,7 +22,7 @@ export default function BackToTop() {
         position: 'fixed',
         bottom: '2rem',
         right: '2rem',
-        zIndex: 50,
+        zIndex: 35,
         width: '52px',
         height: '52px',
         borderRadius: '50%',
