@@ -219,12 +219,9 @@ textarea:focus-visible {
 .footer-inner   { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1.5rem; }
 
 @media (max-width: 1024px) {
-  .section-pad { padding: 6rem 2rem; }
-}
-
-@media (max-width: 768px) {
   .section-pad    { padding: 4rem 1.25rem; }
   .nav-links      { display: none !important; }
+  .hero-eyebrow   { display: none !important; }
   .nav-inner      { padding: 1.25rem 1.25rem !important; }
   .hero-content   { padding: 0 1.25rem 3rem !important; }
   .hero-stats     { gap: 1.5rem !important; }

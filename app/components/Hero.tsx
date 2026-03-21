@@ -28,9 +28,12 @@ export default function Hero() {
     if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
     window.scrollTo(0, 0);
 
-    // If page was loaded with a hash (e.g. /#artists from artist back-link),
-    // scroll there after layout has settled. #book is handled by Booking.tsx.
+    // Grab hash then immediately strip it — page always looks fresh on reload
     const hash = window.location.hash;
+    if (hash) history.replaceState(null, '', window.location.pathname + window.location.search);
+
+    // If a hash was present (e.g. /#artists from back-link), scroll there after layout settles.
+    // #book is handled by Booking.tsx.
     if (hash && hash !== '#book') {
       const hashTimer = setTimeout(() => {
         document.querySelector(hash)?.scrollIntoView({ behavior: 'instant' });
@@ -233,7 +236,7 @@ export default function Hero() {
           marginBottom: '3rem',
         }}>YOUR LOGO HERE</span>
         <nav ref={menuNavRef} aria-label="Mobile navigation" style={{ display: 'flex', flexDirection: 'column', gap: '0' }}>
-          {NAV_ITEMS.map((item) => (
+          {NAV_ITEMS.filter(item => item !== 'Book').map((item) => (
             <a
               key={item}
               href={`#${item.toLowerCase()}`}
@@ -244,27 +247,26 @@ export default function Hero() {
                 padding: '0.6rem 0',
                 borderBottom: '1px solid rgba(255,255,255,0.06)',
                 transition: 'color 0.2s',
-                // M3: removed dead animationDelay — no CSS animation defined on these elements
               }}
               onMouseEnter={e => (e.currentTarget.style.color = 'var(--accent)')}
               onMouseLeave={e => (e.currentTarget.style.color = '#fff')}
             >{item}</a>
           ))}
+          <a href="#book" className="btn-ghost" onClick={() => setOpen(false)}
+            style={{ display: 'block', textAlign: 'center', marginTop: '1.25rem' }}>
+            Book Session
+          </a>
         </nav>
         <div ref={menuBottomRef} style={{ marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
           <InstallPWAButton onInstalled={() => setOpen(false)} />
           <a
             href="/sale"
             onClick={() => setOpen(false)}
-            className="btn-ghost"
+            className="nav-sale-badge"
             style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.6rem', textDecoration: 'none' }}
           >
             <span className="nav-sale-dot" />
-            This Site Is For Sale
-          </a>
-          <a href="#book" className="btn-primary" onClick={() => setOpen(false)}
-            style={{ display: 'block', textAlign: 'center' }}>
-            Book Session
+            <span>This site is for sale,<br />click for details</span>
           </a>
         </div>
       </div>
@@ -310,7 +312,7 @@ export default function Hero() {
           <li>
             <a href="/sale" className="nav-sale-badge">
               <span className="nav-sale-dot" />
-              This Site Is For Sale
+              <span>This site is for sale,<br />click for details</span>
             </a>
           </li>
         </ul>
@@ -361,7 +363,7 @@ export default function Hero() {
       }}>
         <div style={{ maxWidth: '600px', width: '100%' }}>
 
-          <div ref={eyebrowRef} style={{
+          <div ref={eyebrowRef} className="hero-eyebrow" style={{
             display: 'inline-flex', alignItems: 'center', gap: '0.6rem',
             background: 'rgba(255,255,255,0.08)',
             border: '1px solid rgba(255,255,255,0.15)',
@@ -459,7 +461,7 @@ export default function Hero() {
         @keyframes overlayFallback {
           to { transform: translateX(100%); opacity: 0; display: none; }
         }
-        @media (max-width: 768px) {
+        @media (max-width: 1024px) {
           .hamburger        { display: flex !important; }
           .nav-cta-desktop  { display: none !important; }
         }
@@ -469,35 +471,36 @@ export default function Hero() {
           gap: 0.45rem;
           padding: 0.4rem 1rem 0.4rem 0.7rem;
           border-radius: 999px;
-          border: 1px solid rgba(192,122,46,0.75);
-          background: rgba(192,122,46,0.18);
-          color: #E8952A;
+          border: 1px solid rgba(34,197,94,0.75);
+          background: rgba(34,197,94,0.18);
+          color: #22C55E;
           font-size: 0.68rem;
           font-weight: 700;
           letter-spacing: 0.1em;
           text-transform: uppercase;
           text-decoration: none;
           transition: background 0.2s, border-color 0.2s, box-shadow 0.2s;
-          box-shadow: 0 0 16px rgba(192,122,46,0.28), inset 0 1px 0 rgba(255,255,255,0.06);
-          white-space: nowrap;
+          box-shadow: 0 0 16px rgba(34,197,94,0.28), inset 0 1px 0 rgba(255,255,255,0.06);
+          line-height: 1.4;
+          text-align: center;
         }
         .nav-sale-badge:hover {
-          background: rgba(192,122,46,0.28);
-          border-color: rgba(192,122,46,1);
-          box-shadow: 0 0 28px rgba(192,122,46,0.45), inset 0 1px 0 rgba(255,255,255,0.08);
+          background: rgba(34,197,94,0.28);
+          border-color: rgba(34,197,94,1);
+          box-shadow: 0 0 28px rgba(34,197,94,0.45), inset 0 1px 0 rgba(255,255,255,0.08);
         }
         .nav-sale-dot {
           width: 5px;
           height: 5px;
           border-radius: 50%;
-          background: #C07A2E;
-          box-shadow: 0 0 5px rgba(192,122,46,0.8);
+          background: #22C55E;
+          box-shadow: 0 0 5px rgba(34,197,94,0.8);
           animation: navSalePulse 2s ease-in-out infinite;
           flex-shrink: 0;
         }
         @keyframes navSalePulse {
-          0%, 100% { opacity: 1; box-shadow: 0 0 5px rgba(192,122,46,0.8); }
-          50%       { opacity: 0.45; box-shadow: 0 0 2px rgba(192,122,46,0.3); }
+          0%, 100% { opacity: 1; box-shadow: 0 0 5px rgba(34,197,94,0.8); }
+          50%       { opacity: 0.45; box-shadow: 0 0 2px rgba(34,197,94,0.3); }
         }
       `}</style>
     </section>

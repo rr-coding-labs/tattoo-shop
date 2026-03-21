@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 
 type Platform = 'ios' | 'android' | 'chrome' | 'other';
 
@@ -47,9 +48,11 @@ const INSTRUCTIONS: Record<Platform, { steps: string[]; note?: string }> = {
 interface Props {
   /** Called when the user accepts the Android/Chrome native install prompt */
   onInstalled?: () => void;
+  /** Called just before the instructions sheet opens (e.g. close the nav menu) */
+  onOpen?: () => void;
 }
 
-export default function InstallPWAButton({ onInstalled }: Props) {
+export default function InstallPWAButton({ onInstalled, onOpen }: Props) {
   const [platform, setPlatform] = useState<Platform | null>(null);
   const [deferredPrompt, setDeferredPrompt] = useState<Event & { prompt(): void; userChoice: Promise<{ outcome: string }> } | null>(null);
   const [showModal, setShowModal] = useState(false);
@@ -92,7 +95,8 @@ export default function InstallPWAButton({ onInstalled }: Props) {
       setDeferredPrompt(null);
       return;
     }
-    // iOS or no native prompt — show instructions
+    // iOS or no native prompt — close menu first, then show sheet
+    onOpen?.();
     setShowModal(true);
   };
 
@@ -120,7 +124,6 @@ export default function InstallPWAButton({ onInstalled }: Props) {
         onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = 'rgba(192,122,46,0.15)'; }}
         onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = 'rgba(192,122,46,0.08)'; }}
       >
-        {/* Home screen icon */}
         <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
           <rect x="1" y="1" width="12" height="12" rx="2.5" stroke="currentColor" strokeWidth="1.3"/>
           <path d="M7 4v6M4 7h6" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/>
@@ -128,8 +131,8 @@ export default function InstallPWAButton({ onInstalled }: Props) {
         Add to Home Screen
       </button>
 
-      {/* Instructions modal */}
-      {showModal && (
+      {/* Bottom sheet — portalled to body to escape menu's backdropFilter stacking context */}
+      {showModal && createPortal(
         <div
           role="dialog"
           aria-modal="true"
@@ -137,30 +140,35 @@ export default function InstallPWAButton({ onInstalled }: Props) {
           onClick={() => setShowModal(false)}
           style={{
             position: 'fixed', inset: 0, zIndex: 200,
-            background: 'rgba(0,0,0,0.75)',
-            backdropFilter: 'blur(8px)',
-            display: 'flex', alignItems: 'flex-end', justifyContent: 'center',
-            padding: '1rem',
+            background: 'rgba(0,0,0,0.6)',
+            backdropFilter: 'blur(6px)',
           }}
         >
           <div
             onClick={e => e.stopPropagation()}
             style={{
-              width: '100%', maxWidth: '480px',
+              position: 'absolute', bottom: 0, left: 0, right: 0,
               background: '#1A1510',
-              border: '1px solid rgba(192,122,46,0.2)',
-              borderRadius: '20px 20px 16px 16px',
-              padding: '2rem',
-              position: 'relative',
+              borderTop: '1px solid rgba(192,122,46,0.2)',
+              borderRadius: '24px 24px 0 0',
+              padding: '2rem 2rem calc(2rem + env(safe-area-inset-bottom))',
+              animation: 'sheetSlideUp 0.35s cubic-bezier(0.32,0.72,0,1) both',
             }}
           >
+            {/* Drag handle */}
+            <div style={{
+              width: 40, height: 4, borderRadius: 2,
+              background: 'rgba(255,255,255,0.15)',
+              margin: '0 auto 1.75rem',
+            }} />
+
             {/* Close */}
             <button
               ref={closeRef}
               onClick={() => setShowModal(false)}
               aria-label="Close"
               style={{
-                position: 'absolute', top: '1.25rem', right: '1.25rem',
+                position: 'absolute', top: '1.5rem', right: '1.5rem',
                 background: 'rgba(255,255,255,0.06)', border: 'none',
                 borderRadius: '50%', width: 32, height: 32,
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -231,8 +239,15 @@ export default function InstallPWAButton({ onInstalled }: Props) {
               }}>{info.note}</p>
             )}
           </div>
+
+          <style>{`
+            @keyframes sheetSlideUp {
+              from { transform: translateY(100%); }
+              to   { transform: translateY(0); }
+            }
+          `}</style>
         </div>
-      )}
+      , document.body)}
     </>
   );
 }

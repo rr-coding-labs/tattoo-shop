@@ -94,57 +94,54 @@ export default function Artists() {
           gap: '1.5rem',
         }}>
           {ARTISTS.map(({ name, role, years, img, slug }) => (
-            // C2: removed div[role="button"] wrapping an <a> — restructured to avoid
-            // nested interactive elements. The card link covers portrait+info; the
-            // "Book with X" button lives outside the link.
             <div key={name} className="artist-card glass-card-warm" style={{ overflow: 'hidden', padding: 0 }}>
 
-              {/* Entire portrait + info area is one link to the artist page */}
-              <a
-                href={`/artists/${slug}`}
-                style={{ display: 'block', textDecoration: 'none', color: 'inherit' }}
-                aria-label={`View ${name}'s profile`}
-              >
-                {/* Portrait — H2: use next/image with fill */}
-                <div className="artist-portrait" style={{
-                  height: '320px',
-                  position: 'relative',
-                  overflow: 'hidden',
+              {/* Portrait */}
+              <div className="artist-portrait" style={{
+                height: '320px',
+                position: 'relative',
+                overflow: 'hidden',
+              }}>
+                <Image
+                  src={img}
+                  alt={name}
+                  fill
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 400px"
+                  style={{ objectFit: 'cover', objectPosition: 'center top' }}
+                />
+                {/* Dark gradient overlay at bottom */}
+                <div style={{
+                  position: 'absolute', inset: 0,
+                  background: 'linear-gradient(to top, rgba(10,8,6,0.7) 0%, transparent 50%)',
+                }} />
+                <div style={{
+                  position: 'absolute', bottom: '1.5rem', left: '1.5rem',
+                  fontSize: '0.65rem', letterSpacing: '0.1em', textTransform: 'uppercase',
+                  color: 'var(--accent)', fontWeight: 600,
                 }}>
-                  <Image
-                    src={img}
-                    alt={name}
-                    fill
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 400px"
-                    style={{ objectFit: 'cover', objectPosition: 'center top' }}
-                  />
-                  {/* Dark gradient overlay at bottom */}
-                  <div style={{
-                    position: 'absolute', inset: 0,
-                    background: 'linear-gradient(to top, rgba(10,8,6,0.7) 0%, transparent 50%)',
-                  }} />
-                  <div style={{
-                    position: 'absolute', bottom: '1.5rem', left: '1.5rem',
-                    fontSize: '0.65rem', letterSpacing: '0.1em', textTransform: 'uppercase',
-                    color: 'var(--accent)', fontWeight: 600,
-                  }}>
-                    {years} experience
-                  </div>
+                  {years} experience
                 </div>
+              </div>
 
-                {/* Info */}
-                <div style={{ padding: '1.5rem 2rem 1rem' }}>
-                  <h3 className="text-headline" style={{ color: '#fff', marginBottom: '0.35rem' }}>{name}</h3>
-                  <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem', margin: 0 }}>{role}</p>
-                </div>
-              </a>
+              {/* Info */}
+              <div style={{ padding: '1.5rem 2rem 1rem' }}>
+                <h3 className="text-headline" style={{ color: '#fff', marginBottom: '0.35rem' }}>{name}</h3>
+                <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem', margin: 0 }}>{role}</p>
+              </div>
 
-              {/* Book button lives outside the card link — no nested interactive elements */}
-              <div style={{ padding: '0.75rem 2rem 2rem' }}>
+              {/* Buttons */}
+              <div style={{ padding: '0.75rem 2rem 2rem', display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
+                <a
+                  href={`/artists/${slug}`}
+                  className="btn-primary"
+                  style={{ display: 'block', textAlign: 'center', fontSize: '0.72rem' }}
+                >
+                  Check my portfolio
+                </a>
                 <a
                   href="#book"
                   className="btn-ghost"
-                  style={{ fontSize: '0.7rem', padding: '0.6rem 1.4rem' }}
+                  style={{ display: 'block', textAlign: 'center', fontSize: '0.7rem', padding: '0.6rem 1.4rem' }}
                   onClick={() => window.dispatchEvent(new CustomEvent('select-artist', { detail: name }))}
                 >
                   Book with {name.split(' ')[0]}

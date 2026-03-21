@@ -141,13 +141,9 @@ export default function Footer() {
           <div style={{ display: 'flex', alignItems: 'center', gap: '2rem', flexWrap: 'wrap' }}>
             {/* H6: removed dead href="#" Privacy/Terms links — no real pages exist yet */}
 
-            {/* Sale page — deliberately styled differently */}
             <a href="/sale" className="footer-sale-badge">
               <span className="footer-sale-dot" />
-              This site is for sale
-              <svg aria-hidden="true" width="10" height="10" viewBox="0 0 10 10" fill="none">
-                <path d="M2 8L8 2M4.5 2H8v3.5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
+              <span>This site is for sale,<br />click for details</span>
             </a>
           </div>
         </div>
@@ -159,36 +155,38 @@ export default function Footer() {
           display: inline-flex;
           align-items: center;
           gap: 0.45rem;
-          padding: 0.35rem 0.85rem 0.35rem 0.65rem;
+          padding: 0.4rem 1rem 0.4rem 0.7rem;
           border-radius: 999px;
-          border: 1px solid rgba(192,122,46,0.45);
-          background: rgba(192,122,46,0.07);
-          color: #C07A2E;
-          font-size: 0.65rem;
-          font-weight: 600;
+          border: 1px solid rgba(34,197,94,0.75);
+          background: rgba(34,197,94,0.18);
+          color: #22C55E;
+          font-size: 0.68rem;
+          font-weight: 700;
           letter-spacing: 0.1em;
           text-transform: uppercase;
           text-decoration: none;
+          text-align: center;
+          line-height: 1.4;
           transition: background 0.2s, border-color 0.2s, box-shadow 0.2s;
-          box-shadow: 0 0 12px rgba(192,122,46,0.12);
+          box-shadow: 0 0 16px rgba(34,197,94,0.28), inset 0 1px 0 rgba(255,255,255,0.06);
         }
         .footer-sale-badge:hover {
-          background: rgba(192,122,46,0.15);
-          border-color: rgba(192,122,46,0.75);
-          box-shadow: 0 0 20px rgba(192,122,46,0.25);
+          background: rgba(34,197,94,0.28);
+          border-color: rgba(34,197,94,1);
+          box-shadow: 0 0 28px rgba(34,197,94,0.45), inset 0 1px 0 rgba(255,255,255,0.08);
         }
         .footer-sale-dot {
-          width: 6px;
-          height: 6px;
+          width: 5px;
+          height: 5px;
           border-radius: 50%;
-          background: #C07A2E;
-          box-shadow: 0 0 6px rgba(192,122,46,0.8);
+          background: #22C55E;
+          box-shadow: 0 0 5px rgba(34,197,94,0.8);
           animation: salePulse 2s ease-in-out infinite;
           flex-shrink: 0;
         }
         @keyframes salePulse {
-          0%, 100% { opacity: 1; box-shadow: 0 0 6px rgba(192,122,46,0.8); }
-          50%       { opacity: 0.5; box-shadow: 0 0 2px rgba(192,122,46,0.3); }
+          0%, 100% { opacity: 1; box-shadow: 0 0 5px rgba(34,197,94,0.8); }
+          50%       { opacity: 0.45; box-shadow: 0 0 2px rgba(34,197,94,0.3); }
         }
         @media (max-width: 1024px) {
           /* M6: two-column layout at tablet to prevent cramped three-column layout */

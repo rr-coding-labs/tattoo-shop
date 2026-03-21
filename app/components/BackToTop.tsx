@@ -23,11 +23,12 @@ export default function BackToTop() {
         bottom: '2rem',
         right: '2rem',
         zIndex: 50,
-        width: '44px',
-        height: '44px',
+        width: '52px',
+        height: '52px',
         borderRadius: '50%',
-        background: 'rgba(192,122,46,0.15)',
-        border: '1px solid rgba(192,122,46,0.4)',
+        background: 'rgba(192,122,46,0.85)',
+        border: '1px solid rgba(192,122,46,0.9)',
+        boxShadow: '0 4px 24px rgba(192,122,46,0.45)',
         backdropFilter: 'blur(10px)',
         cursor: 'pointer',
         display: 'flex',
@@ -36,12 +37,13 @@ export default function BackToTop() {
         opacity: visible ? 1 : 0,
         pointerEvents: visible ? 'auto' : 'none',
         transform: visible ? 'translateY(0)' : 'translateY(12px)',
-        transition: 'opacity 0.3s ease, transform 0.3s ease',
+        transition: 'opacity 0.3s ease, transform 0.3s ease, background 0.2s ease',
       }}
+      onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = 'rgba(192,122,46,1)'; }}
+      onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = 'rgba(192,122,46,0.85)'; }}
     >
-      {/* H3: use var(--accent) instead of hardcoded #B87333 */}
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-        <path d="M8 12V4M4 8l4-4 4 4" stroke="var(--accent)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+      <svg width="18" height="18" viewBox="0 0 16 16" fill="none">
+        <path d="M8 12V4M4 8l4-4 4 4" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
       </svg>
     </button>
   );

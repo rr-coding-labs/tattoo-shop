@@ -213,7 +213,7 @@ export default function SalePage() {
             fontSize: 'clamp(1rem, 2vw, 1.2rem)', color: 'rgba(255,255,255,0.65)',
             lineHeight: 1.75, maxWidth: '640px', margin: '0 auto 3rem',
           }}>
-            Production-ready. Visually stunning. Ship a world-class tattoo studio website for your client in&nbsp;days — not months. Built with the tools agencies trust and the polish clients love.
+            Production-ready. Visually stunning. Get a world-class website for your studio in&nbsp;days — not months. Fully customisable to match your brand and your style.
           </p>
 
           {/* Price */}
@@ -258,42 +258,79 @@ export default function SalePage() {
         </div>
       </section>
 
-      {/* ── PREVIEW FRAME ───────────────────────────────────────── */}
-      <section style={{ padding: '0 2rem 8rem', maxWidth: '1100px', margin: '0 auto' }}>
-        <Reveal>
-          <div style={{
-            borderRadius: '20px', overflow: 'hidden',
-            border: '1px solid rgba(192,122,46,0.2)',
-            boxShadow: '0 40px 120px rgba(0,0,0,0.6), 0 0 0 1px rgba(192,122,46,0.1)',
-            position: 'relative',
-          }}>
-            {/* Browser chrome mockup */}
-            <div style={{
-              background: '#131009', padding: '0.75rem 1rem',
-              display: 'flex', alignItems: 'center', gap: '0.6rem',
-              borderBottom: '1px solid rgba(255,255,255,0.06)',
-            }}>
-              <div style={{ display: 'flex', gap: '0.4rem' }}>
-                {['#FF5F57','#FEBC2E','#28C840'].map(c => (
-                  <div key={c} style={{ width: 12, height: 12, borderRadius: '50%', background: c }} />
-                ))}
-              </div>
-              <div style={{
-                flex: 1, background: 'rgba(255,255,255,0.05)', borderRadius: '6px',
-                padding: '0.25rem 0.75rem', fontSize: '0.7rem', color: 'rgba(255,255,255,0.3)',
-                letterSpacing: '0.04em', maxWidth: '320px', margin: '0 auto',
-              }}>
-                yourlogoheretatoo.com
-              </div>
+      {/* ── SETUP SERVICES ──────────────────────────────────────── */}
+      <section style={{ background: '#0D0B0F', padding: '6rem 2rem', borderTop: '1px solid rgba(192,122,46,0.08)' }}>
+        <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
+          <Reveal>
+            <div style={{ textAlign: 'center', marginBottom: '3.5rem' }}>
+              <div className="sale-eyebrow">Included in the Price</div>
+              <h2 className="sale-section-title">
+                I Handle the <span className="sale-copper">Hard Part</span>
+              </h2>
+              <p style={{ color: 'rgba(255,255,255,0.5)', maxWidth: '520px', margin: '0 auto', lineHeight: 1.7 }}>
+                You get more than code. I set everything up, connect your assets, and hand you the keys to a fully running website.
+              </p>
             </div>
-            <iframe
-              src="/"
-              title="Live preview of the tattoo studio website"
-              style={{ width: '100%', height: '500px', border: 'none', display: 'block' }}
-              loading="lazy"
-            />
+          </Reveal>
+
+          <div className="sale-services-grid">
+            {/* Deployment */}
+            <Reveal delay={0}>
+              <div className="sale-service-card">
+                <div className="sale-service-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <path d="M12 19V5M5 12l7-7 7 7"/>
+                    <rect x="3" y="19" width="18" height="2" rx="1"/>
+                  </svg>
+                </div>
+                <div className="sale-service-tag">Included</div>
+                <h3 style={{ fontWeight: 700, fontSize: '1.1rem', color: '#fff', margin: '0.75rem 0 0.6rem' }}>Deployment &amp; Go-Live Setup</h3>
+                <p style={{ color: 'rgba(255,255,255,0.55)', fontSize: '0.875rem', lineHeight: 1.7, margin: 0 }}>
+                  I configure and deploy the website to your chosen platform — Vercel, Netlify, or your own host. Domain pointing, SSL, environment variables, and production build all handled for you.
+                </p>
+                <div style={{ marginTop: '1.5rem', padding: '0.85rem 1rem', background: 'rgba(192,122,46,0.06)', border: '1px solid rgba(192,122,46,0.15)', borderRadius: '10px', fontSize: '0.78rem', color: 'rgba(255,255,255,0.45)', lineHeight: 1.6 }}>
+                  <strong style={{ color: 'rgba(255,255,255,0.65)' }}>Note:</strong> Ongoing hosting fees (typically £0–£20/month) are the client&apos;s responsibility and billed directly by the platform.
+                </div>
+              </div>
+            </Reveal>
+
+            {/* Image Migration */}
+            <Reveal delay={100}>
+              <div className="sale-service-card">
+                <div className="sale-service-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/>
+                    <rect x="3" y="14" width="7" height="7" rx="1"/>
+                    <path d="M17.5 14v6M14.5 17h6"/>
+                  </svg>
+                </div>
+                <div className="sale-service-tag">Included</div>
+                <h3 style={{ fontWeight: 700, fontSize: '1.1rem', color: '#fff', margin: '0.75rem 0 0.6rem' }}>Image &amp; Content Integration</h3>
+                <p style={{ color: 'rgba(255,255,255,0.55)', fontSize: '0.875rem', lineHeight: 1.7, margin: 0 }}>
+                  Already have a portfolio of images? I&apos;ll wire them directly into the gallery, artist pages, and hero. No manual uploading needed on your end.
+                </p>
+                <div style={{ marginTop: '1rem', borderTop: '1px solid rgba(255,255,255,0.06)', paddingTop: '1rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                  {[
+                    'Connect existing Dropbox, Google Drive, or S3 library',
+                    'Migrate to a headless CMS (Sanity, Contentful, etc.)',
+                    'Editors can upload new work without touching code',
+                  ].map(item => (
+                    <div key={item} style={{ display: 'flex', alignItems: 'flex-start', gap: '0.6rem', fontSize: '0.82rem', color: 'rgba(255,255,255,0.6)' }}>
+                      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true" style={{ marginTop: '2px', flexShrink: 0 }}>
+                        <circle cx="7" cy="7" r="6" stroke="rgba(192,122,46,0.35)" strokeWidth="1"/>
+                        <path d="M4.5 7l1.8 1.8L9.5 5.2" stroke="#C07A2E" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
+                      </svg>
+                      {item}
+                    </div>
+                  ))}
+                </div>
+                <div style={{ marginTop: '1.5rem', padding: '0.85rem 1rem', background: 'rgba(192,122,46,0.06)', border: '1px solid rgba(192,122,46,0.15)', borderRadius: '10px', fontSize: '0.78rem', color: 'rgba(255,255,255,0.45)', lineHeight: 1.6 }}>
+                  <strong style={{ color: 'rgba(255,255,255,0.65)' }}>CMS migration</strong> (full headless setup, data modelling, editor training) is quoted separately depending on the scope.
+                </div>
+              </div>
+            </Reveal>
           </div>
-        </Reveal>
+        </div>
       </section>
 
       {/* ── FEATURES ────────────────────────────────────────────── */}
@@ -448,81 +485,6 @@ export default function SalePage() {
         </div>
       </section>
 
-      {/* ── SETUP SERVICES ──────────────────────────────────────── */}
-      <section style={{ background: '#0D0B0F', padding: '6rem 2rem', borderTop: '1px solid rgba(192,122,46,0.08)' }}>
-        <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
-          <Reveal>
-            <div style={{ textAlign: 'center', marginBottom: '3.5rem' }}>
-              <div className="sale-eyebrow">Included in the Price</div>
-              <h2 className="sale-section-title">
-                I Handle the <span className="sale-copper">Hard Part</span>
-              </h2>
-              <p style={{ color: 'rgba(255,255,255,0.5)', maxWidth: '520px', margin: '0 auto', lineHeight: 1.7 }}>
-                You get more than code. I set everything up, connect your assets, and hand you the keys to a fully running website.
-              </p>
-            </div>
-          </Reveal>
-
-          <div className="sale-services-grid">
-            {/* Deployment */}
-            <Reveal delay={0}>
-              <div className="sale-service-card">
-                <div className="sale-service-icon">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                    <path d="M12 19V5M5 12l7-7 7 7"/>
-                    <rect x="3" y="19" width="18" height="2" rx="1"/>
-                  </svg>
-                </div>
-                <div className="sale-service-tag">Included</div>
-                <h3 style={{ fontWeight: 700, fontSize: '1.1rem', color: '#fff', margin: '0.75rem 0 0.6rem' }}>Deployment &amp; Go-Live Setup</h3>
-                <p style={{ color: 'rgba(255,255,255,0.55)', fontSize: '0.875rem', lineHeight: 1.7, margin: 0 }}>
-                  I configure and deploy the website to your chosen platform — Vercel, Netlify, or your own host. Domain pointing, SSL, environment variables, and production build all handled for you.
-                </p>
-                <div style={{ marginTop: '1.5rem', padding: '0.85rem 1rem', background: 'rgba(192,122,46,0.06)', border: '1px solid rgba(192,122,46,0.15)', borderRadius: '10px', fontSize: '0.78rem', color: 'rgba(255,255,255,0.45)', lineHeight: 1.6 }}>
-                  <strong style={{ color: 'rgba(255,255,255,0.65)' }}>Note:</strong> Ongoing hosting fees (typically £0–£20/month) are the client&apos;s responsibility and billed directly by the platform.
-                </div>
-              </div>
-            </Reveal>
-
-            {/* Image Migration */}
-            <Reveal delay={100}>
-              <div className="sale-service-card">
-                <div className="sale-service-icon">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                    <rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/>
-                    <rect x="3" y="14" width="7" height="7" rx="1"/>
-                    <path d="M17.5 14v6M14.5 17h6"/>
-                  </svg>
-                </div>
-                <div className="sale-service-tag">Included</div>
-                <h3 style={{ fontWeight: 700, fontSize: '1.1rem', color: '#fff', margin: '0.75rem 0 0.6rem' }}>Image &amp; Content Integration</h3>
-                <p style={{ color: 'rgba(255,255,255,0.55)', fontSize: '0.875rem', lineHeight: 1.7, margin: 0 }}>
-                  Already have a portfolio of images? I&apos;ll wire them directly into the gallery, artist pages, and hero. No manual uploading needed on your end.
-                </p>
-                <div style={{ marginTop: '1rem', borderTop: '1px solid rgba(255,255,255,0.06)', paddingTop: '1rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                  {[
-                    'Connect existing Dropbox, Google Drive, or S3 library',
-                    'Migrate to a headless CMS (Sanity, Contentful, etc.)',
-                    'Editors can upload new work without touching code',
-                  ].map(item => (
-                    <div key={item} style={{ display: 'flex', alignItems: 'flex-start', gap: '0.6rem', fontSize: '0.82rem', color: 'rgba(255,255,255,0.6)' }}>
-                      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true" style={{ marginTop: '2px', flexShrink: 0 }}>
-                        <circle cx="7" cy="7" r="6" stroke="rgba(192,122,46,0.35)" strokeWidth="1"/>
-                        <path d="M4.5 7l1.8 1.8L9.5 5.2" stroke="#C07A2E" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
-                      </svg>
-                      {item}
-                    </div>
-                  ))}
-                </div>
-                <div style={{ marginTop: '1.5rem', padding: '0.85rem 1rem', background: 'rgba(192,122,46,0.06)', border: '1px solid rgba(192,122,46,0.15)', borderRadius: '10px', fontSize: '0.78rem', color: 'rgba(255,255,255,0.45)', lineHeight: 1.6 }}>
-                  <strong style={{ color: 'rgba(255,255,255,0.65)' }}>CMS migration</strong> (full headless setup, data modelling, editor training) is quoted separately depending on the scope.
-                </div>
-              </div>
-            </Reveal>
-          </div>
-        </div>
-      </section>
-
       {/* ── STATS STRIP ─────────────────────────────────────────── */}
       <section style={{ background: '#0D0B0F', padding: '4rem 2rem', borderTop: '1px solid rgba(192,122,46,0.1)', borderBottom: '1px solid rgba(192,122,46,0.1)' }}>
         <Reveal>
@@ -586,7 +548,7 @@ export default function SalePage() {
         flexWrap: 'wrap', gap: '1rem',
         fontSize: '0.72rem', color: 'rgba(255,255,255,0.3)',
       }}>
-        <span>© 2025 Your Logo Here Tattoo. All rights reserved.</span>
+        <span>© {new Date().getFullYear()} Your Logo Here Tattoo. All rights reserved.</span>
         <a href="/" target="_blank" rel="noopener noreferrer" style={{ color: '#C07A2E', textDecoration: 'none', letterSpacing: '0.06em' }}>
           View the live app →
         </a>
@@ -708,7 +670,7 @@ export default function SalePage() {
         /* Stats grid */
         .sale-stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
 
-        @media (max-width: 768px) {
+        @media (max-width: 1024px) {
           nav { padding: 1rem 1.25rem !important; }
           .sale-split { grid-template-columns: 1fr !important; gap: 3rem !important; }
           .sale-stats-grid { grid-template-columns: repeat(3, 1fr) !important; }
@@ -717,7 +679,6 @@ export default function SalePage() {
           .sale-hero-title { letter-spacing: -0.02em !important; }
         }
         @media (max-width: 600px) {
-          /* L2: switch stats to single column at 600px — three wide labels were too cramped below 480px */
           .sale-stats-grid { grid-template-columns: 1fr !important; text-align: left !important; }
         }
       `}</style>
