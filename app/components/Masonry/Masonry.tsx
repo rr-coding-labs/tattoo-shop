@@ -89,6 +89,18 @@ const Masonry: React.FC<MasonryProps> = ({
 
   const [containerRef, { width }] = useMeasure<HTMLDivElement>();
   const [imagesReady, setImagesReady] = useState(false);
+  const [inView, setInView] = useState(false);
+
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) { setInView(true); io.disconnect(); } },
+      { threshold: 0.05 }
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, [width]); // re-attach after width is known so the element is properly laid out
 
   const getInitialPosition = (item: GridItem) => {
     const containerRect = containerRef.current?.getBoundingClientRect();
@@ -139,7 +151,7 @@ const Masonry: React.FC<MasonryProps> = ({
   const hasMounted = useRef(false);
 
   useLayoutEffect(() => {
-    if (!imagesReady || grid.length === 0) return;
+    if (!imagesReady || !inView || grid.length === 0) return;
     grid.forEach((item, index) => {
       const selector = `[data-key="${item.id}"]`;
       const animationProps = { x: item.x, y: item.y, width: item.w, height: item.h };
@@ -166,7 +178,7 @@ const Masonry: React.FC<MasonryProps> = ({
       }
     });
     hasMounted.current = true;
-  }, [grid, imagesReady, stagger, animateFrom, blurToFocus, duration, ease]);
+  }, [grid, imagesReady, inView, stagger, animateFrom, blurToFocus, duration, ease]);
 
   const handleMouseEnter = (e: React.MouseEvent, item: GridItem) => {
     const selector = `[data-key="${item.id}"]`;
